@@ -1,0 +1,22 @@
+<launch>
+
+  <arg name="device" default="0" />
+  <arg name="calibrated" default="0" />
+
+  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <remap from="image" to="/usb_cam/image_raw"/>
+    <param name="video_device" value="/dev/video$(arg device)" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="mjpeg" />
+    <!--<param name="pixel_format" value="yuyv" />-->
+    <param name="camera_name" value="usb_camera$(arg device)" />
+    <param name="camera_frame_id" value="usb_camera$(arg device)" />
+    <param name="io_method" value="mmap"/>
+    <!--<param name="camera_info_url" if="$(arg calibrated)" value="file://$(find usb_camera)/param/usb_camera$(arg device).yaml" />-->
+  </node>
+
+  <node name="image_proc" pkg="image_proc" type="image_proc" ns="/usb_cam" output="screen" />
+
+
+</launch>
